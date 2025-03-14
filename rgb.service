@@ -1,0 +1,11 @@
+[Unit]
+Description=RGB Service
+
+[Service]
+Type=simple
+ExecStart=RGB_CMD
+Restart=always
+RestartSec=600
+
+[Install]
+WantedBy=default.target
