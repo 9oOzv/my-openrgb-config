@@ -1,9 +1,11 @@
-from hsluv import hsluv_to_rgb, rgb_to_hsluv
+from hsluv import hsluv_to_rgb
 from openrgb import OpenRGBClient
 from openrgb.utils import RGBColor, DeviceType
 from time import time, sleep
 from dataclasses import dataclass
 
+
+brightness = 0.1
 
 client = OpenRGBClient()
 devices = client.devices
@@ -23,12 +25,13 @@ rest = [
     if d.type != DeviceType.DRAM
 ]
 
+
 @dataclass
 class GradientPoint:
     phase: float
     h: int
     s: int
-    l: int
+    l: int  # noqa: E741
 
 
 gradient = [
@@ -50,6 +53,7 @@ parts = [
     (rest, gradient, 1.0)
 ]
 
+
 def interpolate(
     a: tuple[int, ...],
     b: tuple[int, ...],
@@ -59,6 +63,7 @@ def interpolate(
         a[i] * (1 - t) + b[i] * t
         for i in range(len(a))
     )
+
 
 def interpolate_gradient(
     gradient: list[GradientPoint],
@@ -88,16 +93,23 @@ def interpolate_gradient(
         j
     )
 
+
 def color(
     gradient: list[GradientPoint],
     phase: float,
 ) -> RGBColor:
     hsluv = interpolate_gradient(gradient, phase)
+    hsluv = (
+        hsluv[0],
+        hsluv[1],
+        brightness * hsluv[2],
+    )
     rgb = [
         int(255 * x)
         for x in hsluv_to_rgb(hsluv)
     ]
     return RGBColor(*rgb)
+
 
 def colors(
     gradient: list[tuple[float, ...]],
@@ -109,6 +121,7 @@ def colors(
         for i in range(n)
     ]
 
+
 while True:
     for devices, gradient, f in parts:
         num_leds = [
@@ -119,4 +132,4 @@ while True:
         for d, n in zip(devices, num_leds):
             d.set_colors(colors_[:n])
             colors_ = colors_[n:]
-            sleep(0.1)
+            sleep(0.2)
