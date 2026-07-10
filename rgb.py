@@ -5,7 +5,7 @@ from time import time, sleep
 from dataclasses import dataclass
 
 
-brightness = 0.1
+brightness = 0.2
 
 client = OpenRGBClient()
 devices = client.devices
@@ -34,18 +34,28 @@ class GradientPoint:
     l: int  # noqa: E741
 
 
+# gradient = [
+#     GradientPoint(0.00, 160, 100, 20),
+#     GradientPoint(0.30, 160, 100, 20),
+#     GradientPoint(0.50, 360, 100, 20),
+#     GradientPoint(0.80, 360, 100, 20),
+# ]
+
 gradient = [
-    GradientPoint(0.00, 160, 100, 20),
-    GradientPoint(0.30, 160, 100, 20),
-    GradientPoint(0.50, 360, 100, 20),
-    GradientPoint(0.80, 360, 100, 20),
+    GradientPoint(0.00, 0, 0, 100),
+    GradientPoint(1.00, 0, 0, 100)
 ]
 
+# dram_gradient = [
+#     GradientPoint(0.00, 250, 100, 20),
+#     GradientPoint(0.30, 250, 100, 20),
+#     GradientPoint(0.50, 360, 100, 20),
+#     GradientPoint(0.80, 360, 100, 20),
+# ]
+
 dram_gradient = [
-    GradientPoint(0.00, 250, 100, 20),
-    GradientPoint(0.30, 250, 100, 20),
-    GradientPoint(0.50, 360, 100, 20),
-    GradientPoint(0.80, 360, 100, 20),
+    GradientPoint(0.0, 260, 60, 100),
+    GradientPoint(1.0, 260, 60, 100)
 ]
 
 parts = [
